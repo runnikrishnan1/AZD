@@ -31,6 +31,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "ProductCategorySource"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlDimCustomer",
+						"type": "DatasetReference"
+					},
+					"name": "GetMaxCustomerId"
 				}
 			],
 			"sinks": [
@@ -47,6 +54,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "DimProductStream"
+				},
+				{
+					"name": "sink1"
 				}
 			],
 			"transformations": [
@@ -124,6 +134,16 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProductCategorySource",
+				"source(output(",
+				"          CustomerID as integer,",
+				"          CompanyName as string,",
+				"          SalesPerson as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT max(CustomerID) FROM  [dbo].Dim_Customer',",
+				"     format: 'query') ~> GetMaxCustomerId",
 				"ProductSource, ProductModelSource join(ProductSource@ProductModelID == ProductModelSource@ProductModelID,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
@@ -175,7 +195,14 @@
 				"          ProductModelName = ProductModelSource@Name,",
 				"          ProductCategoryID = ProductCategorySource@ProductCategoryID,",
 				"          ProductCategoryName = ProductCategorySource@Name",
-				"     )) ~> DimProductStream"
+				"     )) ~> DimProductStream",
+				"GetMaxCustomerId sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 1) ~> sink1"
 			]
 		}
 	}
