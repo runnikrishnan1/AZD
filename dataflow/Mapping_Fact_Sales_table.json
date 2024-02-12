@@ -109,7 +109,8 @@
 				"          UnitPrice as decimal(19,4),",
 				"          OrderDate as timestamp,",
 				"          CustomerID as integer,",
-				"          TaxAmt as decimal(19,4)",
+				"          TaxAmt as decimal(19,4),",
+				"          TotalAmount as decimal(19,4)",
 				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -126,7 +127,8 @@
 				"          UnitPrice,",
 				"          OrderDate,",
 				"          CustomerID,",
-				"          TaxAmt",
+				"          TaxAmt,",
+				"          TotalAmount",
 				"     )) ~> FactsalesTable"
 			]
 		}
