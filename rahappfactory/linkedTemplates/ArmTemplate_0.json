@@ -779,7 +779,16 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> FactsalesTable"
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ProductID,",
+						"          SalesOrderID = SalesOrderDetails@SalesOrderID,",
+						"          OrderQty,",
+						"          UnitPrice,",
+						"          OrderDate,",
+						"          CustomerID,",
+						"          TaxAmt",
+						"     )) ~> FactsalesTable"
 					]
 				}
 			},
