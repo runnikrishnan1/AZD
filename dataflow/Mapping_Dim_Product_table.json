@@ -1,5 +1,5 @@
 {
-	"name": "dataflow2",
+	"name": "Mapping_Dim_Product_table",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

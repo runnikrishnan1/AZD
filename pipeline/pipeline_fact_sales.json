@@ -1,9 +1,9 @@
 {
-	"name": "pipeline2",
+	"name": "pipeline_fact_sales",
 	"properties": {
 		"activities": [
 			{
-				"name": "Data flow1",
+				"name": "dtflw_Fact_Sales",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,14 +16,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "Mapping_Fact_Sales_table",
 						"type": "DataFlowReference"
 					},
 					"staging": {
-						"linkedService": {
-							"referenceName": "AzureDataLakeStorage1",
-							"type": "LinkedServiceReference"
-						},
 						"folderPath": "staging"
 					},
 					"compute": {
