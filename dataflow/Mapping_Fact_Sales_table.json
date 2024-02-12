@@ -31,6 +31,12 @@
 			"transformations": [
 				{
 					"name": "SalesOrderDetailsColumn"
+				},
+				{
+					"name": "SelectColumn"
+				},
+				{
+					"name": "DervTotalAmount"
 				}
 			],
 			"scriptLines": [
@@ -82,7 +88,19 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> SalesOrderDetailsColumn",
-				"SalesOrderDetailsColumn sink(allowSchemaDrift: true,",
+				"SalesOrderDetailsColumn select(mapColumn(",
+				"          SalesOrderID = SalesOrderDetails@SalesOrderID,",
+				"          OrderQty,",
+				"          ProductID,",
+				"          UnitPrice,",
+				"          CustomerID,",
+				"          TaxAmt,",
+				"          OrderDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectColumn",
+				"SelectColumn derive(TotalAmount = multiply(OrderQty,UnitPrice)) ~> DervTotalAmount",
+				"DervTotalAmount sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          ProductID as integer,",
@@ -103,7 +121,7 @@
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          ProductID,",
-				"          SalesOrderID = SalesOrderDetails@SalesOrderID,",
+				"          SalesOrderID,",
 				"          OrderQty,",
 				"          UnitPrice,",
 				"          OrderDate,",
