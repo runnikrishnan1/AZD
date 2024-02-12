@@ -17,6 +17,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "ProductSource"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlProductModel",
+						"type": "DatasetReference"
+					},
+					"name": "ProductModelSource"
 				}
 			],
 			"sinks": [
@@ -74,6 +81,17 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProductSource",
+				"source(output(",
+				"          ProductModelID as integer,",
+				"          Name as string,",
+				"          CatalogDescription as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProductModelSource",
 				"CustomerSource sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
