@@ -19,6 +19,9 @@
 						"referenceName": "Mapping_Dim_Product_table",
 						"type": "DataFlowReference"
 					},
+					"staging": {
+						"folderPath": "staging"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
