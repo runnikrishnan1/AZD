@@ -167,7 +167,15 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> DimProductStream"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ProductID,",
+				"          ProductName = ProductSource@Name,",
+				"          ProductModelID = ProductSource@ProductModelID,",
+				"          ProductModelName = ProductModelSource@Name,",
+				"          ProductCategoryID = ProductCategorySource@ProductCategoryID,",
+				"          ProductCategoryName = ProductCategorySource@Name",
+				"     )) ~> DimProductStream"
 			]
 		}
 	}
