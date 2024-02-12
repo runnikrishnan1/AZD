@@ -19,7 +19,15 @@
 					"name": "SalesOrderHeaderStream"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "FactsSalesTable",
+						"type": "DatasetReference"
+					},
+					"name": "FactsalesTable"
+				}
+			],
 			"transformations": [
 				{
 					"name": "SalesOrderDetailsColumn"
@@ -73,7 +81,26 @@
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> SalesOrderDetailsColumn"
+				"     broadcast: 'auto')~> SalesOrderDetailsColumn",
+				"SalesOrderDetailsColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ProductID as integer,",
+				"          SalesOrderID as integer,",
+				"          OrderQty as integer,",
+				"          UnitPrice as decimal(19,4),",
+				"          OrderDate as timestamp,",
+				"          CustomerID as integer,",
+				"          TaxAmt as decimal(19,4)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> FactsalesTable"
 			]
 		}
 	}
