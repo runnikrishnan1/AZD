@@ -24,6 +24,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "ProductModelSource"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlProductCategrory",
+						"type": "DatasetReference"
+					},
+					"name": "ProductCategorySource"
 				}
 			],
 			"sinks": [
@@ -35,7 +42,14 @@
 					"name": "DimCustomerDest"
 				}
 			],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "ProductModelJoin"
+				},
+				{
+					"name": "ProductCategoryJoin"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          CustomerID as integer,",
@@ -92,6 +106,27 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProductModelSource",
+				"source(output(",
+				"          ProductCategoryID as integer,",
+				"          ParentProductCategoryID as integer,",
+				"          Name as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProductCategorySource",
+				"ProductSource, ProductModelSource join(ProductSource@ProductModelID == ProductModelSource@ProductModelID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> ProductModelJoin",
+				"ProductModelJoin, ProductCategorySource join(ProductSource@ProductCategoryID == ProductCategorySource@ProductCategoryID,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> ProductCategoryJoin",
 				"CustomerSource sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
