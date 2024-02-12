@@ -46,7 +46,7 @@
 						"referenceName": "AzureSqlDimProductSink",
 						"type": "DatasetReference"
 					},
-					"name": "DimProductSink"
+					"name": "DimProductStream"
 				}
 			],
 			"transformations": [
@@ -167,7 +167,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> DimProductSink"
+				"     errorHandlingOption: 'stopOnFirstError') ~> DimProductStream"
 			]
 		}
 	}
