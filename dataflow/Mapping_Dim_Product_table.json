@@ -125,7 +125,7 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProductCategorySource",
 				"ProductSource, ProductModelSource join(ProductSource@ProductModelID == ProductModelSource@ProductModelID,",
-				"     joinType:'inner',",
+				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> ProductModelJoin",
