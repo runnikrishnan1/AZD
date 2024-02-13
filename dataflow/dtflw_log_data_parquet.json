@@ -14,6 +14,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "logdataprquetsink",
+						"type": "DatasetReference"
+					},
 					"name": "logparquetdes"
 				}
 			],
@@ -43,8 +47,39 @@
 				"logdataparquetsrc filter(!isNull(Resourcegroup)) ~> filter1",
 				"filter1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          {Correlation id} as string,",
+				"          {Operation name} as string,",
+				"          Status as string,",
+				"          {Event category} as string,",
+				"          Level as string,",
+				"          Time as timestamp,",
+				"          Subscription as string,",
+				"          {Event initiated by} as string,",
+				"          {Resource type} as string,",
+				"          {Resource group} as string,",
+				"          Resource as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> logparquetdes"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          {Correlation id} = Correlationid,",
+				"          {Operation name} = Operationname,",
+				"          Status,",
+				"          {Event category} = Eventcategory,",
+				"          Level,",
+				"          Time,",
+				"          Subscription,",
+				"          {Event initiated by} = Eventinitiatedby,",
+				"          {Resource type} = Resourcetype,",
+				"          {Resource group} = Resourcegroup",
+				"     )) ~> logparquetdes"
 			]
 		}
 	}
