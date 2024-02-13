@@ -1,0 +1,55 @@
+{
+	"name": "dtflw_jsonarray",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Jsonsrc",
+						"type": "DatasetReference"
+					},
+					"name": "customersourceJson"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "customerSQLTable",
+						"type": "DatasetReference"
+					},
+					"name": "customerDes"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          customerid as integer,",
+				"          customername as string,",
+				"          registered as boolean,",
+				"          courses as string[]",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> customersourceJson",
+				"customersourceJson sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CustomerID as integer,",
+				"          CustomerName as string,",
+				"          Registered as boolean,",
+				"          Courses as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> customerDes"
+			]
+		}
+	}
+}
