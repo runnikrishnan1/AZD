@@ -21,7 +21,11 @@
 					"name": "customerDes"
 				}
 			],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "flattenCourse"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          customerid as integer,",
@@ -33,7 +37,16 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> customersourceJson",
-				"customersourceJson sink(allowSchemaDrift: true,",
+				"customersourceJson foldDown(unroll(courses, courses),",
+				"     mapColumn(",
+				"          customerid,",
+				"          customername,",
+				"          registered,",
+				"          courses",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenCourse",
+				"flattenCourse sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          CustomerID as integer,",
@@ -48,7 +61,13 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> customerDes"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          CustomerID = customerid,",
+				"          CustomerName = customername,",
+				"          Registered = registered,",
+				"          Courses = courses",
+				"     )) ~> customerDes"
 			]
 		}
 	}
