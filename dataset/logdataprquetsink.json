@@ -49,10 +49,6 @@
 			{
 				"name": "Resource group",
 				"type": "varchar"
-			},
-			{
-				"name": "Resource",
-				"type": "varchar"
 			}
 		],
 		"typeProperties": {
