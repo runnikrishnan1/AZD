@@ -12,7 +12,11 @@
 					"name": "logdataparquetsrc"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "filter1"
@@ -36,7 +40,11 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> logdataparquetsrc",
-				"logdataparquetsrc filter(ERROR_FUNCTION('')) ~> filter1"
+				"logdataparquetsrc filter(!isNull(Resourcegroup)) ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
