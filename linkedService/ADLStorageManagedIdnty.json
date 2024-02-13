@@ -1,0 +1,10 @@
+{
+	"name": "ADLStorageManagedIdnty",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://rahaccnt.dfs.core.windows.net/"
+		}
+	}
+}
