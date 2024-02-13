@@ -72,6 +72,9 @@
 				},
 				{
 					"name": "ProductCategoryJoin"
+				},
+				{
+					"name": "DoesProdExists"
 				}
 			],
 			"scriptLines": [
@@ -163,7 +166,7 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> DimProductLatest",
-				"ProductStream, ProductModelSource join(ProductStream@ProductModelID == ProductModelSource@ProductModelID,",
+				"DoesProdExists, ProductModelSource join(ProductStream@ProductModelID == ProductModelSource@ProductModelID,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
@@ -173,6 +176,9 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> ProductCategoryJoin",
+				"ProductStream, DimProductLatest exists(ProductStream@ProductID == DimProductLatest@ProductID,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> DoesProdExists",
 				"CustomerSource sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
