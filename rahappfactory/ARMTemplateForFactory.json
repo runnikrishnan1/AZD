@@ -259,11 +259,14 @@
 								"parameters": {},
 								"datasetParameters": {
 									"CustomerSource": {},
-									"ProductSource": {},
+									"ProductStream": {},
 									"ProductModelSource": {},
 									"ProductCategorySource": {},
+									"GetMaxCustomerId": {},
+									"DimProductLatest": {},
 									"DimCustomerDest": {},
-									"DimProductStream": {}
+									"DimProductStream": {},
+									"CustomerSKSink": {}
 								}
 							},
 							"staging": {},
@@ -901,6 +904,55 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DimProductLatest')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductModelID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductModelName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductCategoryID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductCategoryName",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Dim_Product"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/FactsSalesTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1158,7 +1210,7 @@
 								"referenceName": "AzureSqlProduct",
 								"type": "DatasetReference"
 							},
-							"name": "ProductSource"
+							"name": "ProductStream"
 						},
 						{
 							"dataset": {
@@ -1173,6 +1225,20 @@
 								"type": "DatasetReference"
 							},
 							"name": "ProductCategorySource"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlDimCustomer",
+								"type": "DatasetReference"
+							},
+							"name": "GetMaxCustomerId"
+						},
+						{
+							"dataset": {
+								"referenceName": "DimProductLatest",
+								"type": "DatasetReference"
+							},
+							"name": "DimProductLatest"
 						}
 					],
 					"sinks": [
@@ -1189,6 +1255,9 @@
 								"type": "DatasetReference"
 							},
 							"name": "DimProductStream"
+						},
+						{
+							"name": "CustomerSKSink"
 						}
 					],
 					"transformations": [
@@ -1197,6 +1266,9 @@
 						},
 						{
 							"name": "ProductCategoryJoin"
+						},
+						{
+							"name": "DoesProdExists"
 						}
 					],
 					"scriptLines": [
@@ -1243,7 +1315,7 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> ProductSource",
+						"     format: 'table') ~> ProductStream",
 						"source(output(",
 						"          ProductModelID as integer,",
 						"          Name as string,",
@@ -1266,16 +1338,41 @@
 						"     validateSchema: false,",
 						"     isolationLevel: 'READ_UNCOMMITTED',",
 						"     format: 'table') ~> ProductCategorySource",
-						"ProductSource, ProductModelSource join(ProductSource@ProductModelID == ProductModelSource@ProductModelID,",
-						"     joinType:'inner',",
+						"source(output(",
+						"          CustomerID as integer,",
+						"          CompanyName as string,",
+						"          SalesPerson as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT max(CustomerID) FROM  [dbo].Dim_Customer',",
+						"     format: 'query') ~> GetMaxCustomerId",
+						"source(output(",
+						"          ProductID as integer,",
+						"          ProductName as string,",
+						"          ProductModelID as integer,",
+						"          ProductModelName as string,",
+						"          ProductCategoryID as integer,",
+						"          ProductCategoryName as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DimProductLatest",
+						"DoesProdExists, ProductModelSource join(ProductStream@ProductModelID == ProductModelSource@ProductModelID,",
+						"     joinType:'left',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
 						"     broadcast: 'auto')~> ProductModelJoin",
-						"ProductModelJoin, ProductCategorySource join(ProductSource@ProductCategoryID == ProductCategorySource@ProductCategoryID,",
+						"ProductModelJoin, ProductCategorySource join(ProductStream@ProductCategoryID == ProductCategorySource@ProductCategoryID,",
 						"     joinType:'left',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
 						"     broadcast: 'auto')~> ProductCategoryJoin",
+						"ProductStream, DimProductLatest exists(ProductStream@ProductID == DimProductLatest@ProductID,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> DoesProdExists",
 						"CustomerSource sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
@@ -1312,12 +1409,19 @@
 						"     errorHandlingOption: 'stopOnFirstError',",
 						"     mapColumn(",
 						"          ProductID,",
-						"          ProductName = ProductSource@Name,",
-						"          ProductModelID = ProductSource@ProductModelID,",
+						"          ProductName = ProductStream@Name,",
+						"          ProductModelID = ProductStream@ProductModelID,",
 						"          ProductModelName = ProductModelSource@Name,",
 						"          ProductCategoryID = ProductCategorySource@ProductCategoryID,",
 						"          ProductCategoryName = ProductCategorySource@Name",
-						"     )) ~> DimProductStream"
+						"     )) ~> DimProductStream",
+						"GetMaxCustomerId sink(validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     store: 'cache',",
+						"     format: 'inline',",
+						"     output: false,",
+						"     saveOrder: 1) ~> CustomerSKSink"
 					]
 				}
 			},
@@ -1327,6 +1431,7 @@
 				"[concat(variables('factoryId'), '/datasets/AzureSqlProductModel')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlProductCategrory')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlDimCustomer')]",
+				"[concat(variables('factoryId'), '/datasets/DimProductLatest')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlDimProductSink')]"
 			]
 		},
