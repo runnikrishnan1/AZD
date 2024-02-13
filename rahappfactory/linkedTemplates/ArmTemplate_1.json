@@ -537,7 +537,7 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
-						"     documentForm: 'documentPerLine') ~> customersourceJson",
+						"     documentForm: 'arrayOfDocuments') ~> customersourceJson",
 						"customersourceJson foldDown(unroll(courses, courses),",
 						"     mapColumn(",
 						"          customerid,",
