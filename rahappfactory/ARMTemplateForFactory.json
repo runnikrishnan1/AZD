@@ -1652,6 +1652,18 @@
 						"logdataparquetsrc filter(!isNull(Resourcegroup)) ~> filter1",
 						"filter1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     input(",
+						"          {Correlation id} as string,",
+						"          {Operation name} as string,",
+						"          Status as string,",
+						"          {Event category} as string,",
+						"          Level as string,",
+						"          Time as timestamp,",
+						"          Subscription as string,",
+						"          {Event initiated by} as string,",
+						"          {Resource type} as string,",
+						"          {Resource group} as string",
+						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
 						"     updateable:false,",
@@ -1761,7 +1773,50 @@
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
-				"schema": [],
+				"schema": [
+					{
+						"name": "Correlation id",
+						"type": "varchar"
+					},
+					{
+						"name": "Operation name",
+						"type": "varchar"
+					},
+					{
+						"name": "Status",
+						"type": "varchar"
+					},
+					{
+						"name": "Event category",
+						"type": "varchar"
+					},
+					{
+						"name": "Level",
+						"type": "varchar"
+					},
+					{
+						"name": "Time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Subscription",
+						"type": "varchar"
+					},
+					{
+						"name": "Event initiated by",
+						"type": "varchar"
+					},
+					{
+						"name": "Resource type",
+						"type": "varchar"
+					},
+					{
+						"name": "Resource group",
+						"type": "varchar"
+					}
+				],
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "logdata_prquet"
@@ -1769,6 +1824,52 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_log_parquet')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "dtflw_lg_prqt",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dtflw_log_data_parquet",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"logdataparquetsrc": {},
+									"logparquetdes": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dtflw_log_data_parquet')]"
 			]
 		},
 		{
