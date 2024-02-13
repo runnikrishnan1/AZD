@@ -2040,7 +2040,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "dtflw_jsob",
+						"name": "dtflw_json",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
@@ -2052,6 +2052,15 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dtflw_jsonarray",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"customersourceJson": {},
+									"customerDes": {}
+								}
+							},
 							"staging": {},
 							"compute": {
 								"coreCount": 8,
@@ -2066,7 +2075,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dtflw_jsonarray')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/default')]",
