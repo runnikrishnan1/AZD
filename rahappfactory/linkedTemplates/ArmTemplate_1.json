@@ -244,7 +244,9 @@
 							{
 								"referenceName": "ReadCSv",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"filename": "Log.csv"
+								}
 							}
 						],
 						"outputs": [
