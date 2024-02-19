@@ -182,7 +182,10 @@
 				"inputs": [
 					{
 						"referenceName": "ReadCSv",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": "Log.csv"
+						}
 					}
 				],
 				"outputs": [
