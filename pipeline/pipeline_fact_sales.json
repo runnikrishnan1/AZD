@@ -19,9 +19,6 @@
 						"referenceName": "Mapping_Fact_Sales_table",
 						"type": "DataFlowReference"
 					},
-					"staging": {
-						"folderPath": "staging"
-					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"

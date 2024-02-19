@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"name": "ReadCSv",
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  ReadCSv",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ReadCSv",
 					"dataset": {
 						"referenceName": "ReadCSv",
 						"type": "DatasetReference"
