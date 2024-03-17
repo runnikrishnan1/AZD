@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"tablelists": {
+			"tablenames": {
 				"type": "array",
 				"defaultValue": [
 					"Dim_Customer",
@@ -16,6 +16,10 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "@pipeline.parameters.tablenames"
+		}
 	}
 }
