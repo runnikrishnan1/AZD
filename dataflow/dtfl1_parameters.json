@@ -1,0 +1,16 @@
+{
+	"name": "dtfl1_parameters",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"parameters{",
+				"     tablelists as string[] ([\"Dim_Customer\",\"Dim_Product\"])",
+				"}"
+			]
+		}
+	}
+}
