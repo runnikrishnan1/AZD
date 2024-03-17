@@ -19,7 +19,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "@pipeline.parameters.tablenames"
+			"table": "@pipeline().parameters.tablenames"
 		}
 	}
 }
