@@ -16,7 +16,7 @@
 			"transformations": [],
 			"scriptLines": [
 				"parameters{",
-				"     parameter1 as string",
+				"     tablenames as string (\"Dim_Customer\")",
 				"}",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
