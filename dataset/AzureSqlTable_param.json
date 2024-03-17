@@ -7,11 +7,8 @@
 		},
 		"parameters": {
 			"tablenames": {
-				"type": "array",
-				"defaultValue": [
-					"Dim_Customer",
-					"Dim_Product"
-				]
+				"type": "string",
+				"defaultValue": "Dim_Customer"
 			}
 		},
 		"annotations": [],
