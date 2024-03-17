@@ -1,0 +1,21 @@
+{
+	"name": "AzureSqlTable_param",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tablelists": {
+				"type": "array",
+				"defaultValue": [
+					"Dim_Customer",
+					"Dim_Product"
+				]
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
