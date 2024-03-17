@@ -19,7 +19,10 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "@pipeline().parameters.tablenames"
+			"table": {
+				"value": "@dataset().tablenames",
+				"type": "Expression"
+			}
 		}
 	}
 }
