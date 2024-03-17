@@ -17,13 +17,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dtfl1_parameters",
-						"type": "DataFlowReference",
-						"parameters": {
-							"tablelists": [
-								"Dim_Customer",
-								"Dim_Product"
-							]
-						}
+						"type": "DataFlowReference"
 					},
 					"staging": {
 						"linkedService": {
