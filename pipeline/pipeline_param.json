@@ -20,6 +20,11 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"tablenames": "\"Dim_Product\""
+						},
+						"datasetParameters": {
+							"source1": {
+								"tablenames": "Dim_Customer"
+							}
 						}
 					},
 					"compute": {
