@@ -11,6 +11,9 @@
 		"AzureSqlDatabase1_connectionString": {
 			"value": ""
 		},
+		"staging_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://rahaccnt.dfs.core.windows.net/"
 		},
