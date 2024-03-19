@@ -1,5 +1,5 @@
 {
-	"name": "PartitionOutput",
+	"name": "PartitionOutputPipeline",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
