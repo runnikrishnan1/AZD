@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "PartitionOutput",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
