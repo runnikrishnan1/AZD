@@ -48,7 +48,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "CopyTableData",
+							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -69,7 +69,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "AzureSalesOrderDetails",
+									"referenceName": "AzureSqlTableDynamic",
 									"type": "DatasetReference"
 								}
 							]
