@@ -1,0 +1,9 @@
+{
+	"name": "rahappfactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ecde2413-305c-4c29-96ec-4619a08b65ae",
+		"tenantId": "99129858-4bd3-468d-a863-d621df1d74e7"
+	}
+}

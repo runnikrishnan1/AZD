@@ -1,0 +1,85 @@
+{
+	"name": "dtflw_log_data_parquet",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "log_data_parquet",
+						"type": "DatasetReference"
+					},
+					"name": "logdataparquetsrc"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "logdataprquetsink",
+						"type": "DatasetReference"
+					},
+					"name": "logparquetdes"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filter1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Id as string,",
+				"          Correlationid as string,",
+				"          Operationname as string,",
+				"          Status as string,",
+				"          Eventcategory as string,",
+				"          Level as string,",
+				"          Time as string,",
+				"          Subscription as string,",
+				"          Eventinitiatedby as string,",
+				"          Resourcetype as string,",
+				"          Resourcegroup as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> logdataparquetsrc",
+				"logdataparquetsrc filter(!isNull(Resourcegroup)) ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          {Correlation id} as string,",
+				"          {Operation name} as string,",
+				"          Status as string,",
+				"          {Event category} as string,",
+				"          Level as string,",
+				"          Time as timestamp,",
+				"          Subscription as string,",
+				"          {Event initiated by} as string,",
+				"          {Resource type} as string,",
+				"          {Resource group} as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          {Correlation id} = Correlationid,",
+				"          {Operation name} = Operationname,",
+				"          Status,",
+				"          {Event category} = Eventcategory,",
+				"          Level,",
+				"          Time,",
+				"          Subscription,",
+				"          {Event initiated by} = Eventinitiatedby,",
+				"          {Resource type} = Resourcetype,",
+				"          {Resource group} = Resourcegroup",
+				"     )) ~> logparquetdes"
+			]
+		}
+	}
+}
