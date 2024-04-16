@@ -14,7 +14,7 @@
 				"fileSystem": "csv"
 			},
 			"columnDelimiter": ",",
-			"compressionCodec": "snappy",
+			"compressionCodec": "TarGZip",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
