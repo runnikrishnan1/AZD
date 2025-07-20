@@ -2,7 +2,9 @@
 	"name": "rahappfactory",
 	"properties": {
 		"globalConfigurations": {
-			"PipelineBillingEnabled": "true"
+			"PipelineBillingEnabled": "true",
+			"factoryStagingLSReferenceName": "AzureDataLakeStorage1",
+			"factoryStagingLSType": "LinkedServiceReference"
 		}
 	},
 	"location": "eastus",
