@@ -21,13 +21,13 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "AzureSalesOrderDetails",
+						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
 					}
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEachRecord",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -51,20 +51,19 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"enableStaging": false
-							},
-							"inputs": [
+							"userProperties": [
 								{
-									"referenceName": "AzureSqlTable1",
-									"type": "DatasetReference"
+									"name": "Source",
+									"value": "@item().SourceTable"
+								},
+								{
+									"name": "Destination",
+									"value": "@item().DestTable"
 								}
-							]
+							],
+							"typeProperties": {
+								"enableStaging": false
+							}
 						}
 					]
 				}
