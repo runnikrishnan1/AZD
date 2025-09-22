@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTableParam",
+	"name": "AzureSqlSourceTableParam",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
@@ -7,9 +7,6 @@
 		},
 		"parameters": {
 			"SourceTable": {
-				"type": "string"
-			},
-			"DestTable": {
 				"type": "string"
 			}
 		},
