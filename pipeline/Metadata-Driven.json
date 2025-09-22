@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "LookupData",
+				"name": "Lookup1",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -27,11 +27,11 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEachRecord",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LookupData",
+						"activity": "Lookup1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -39,19 +39,32 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"isSequential": false,
+					"items": {
+						"value": "@activity('Lookup1').output",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
+								"timeout": "0.12:00:00",
 								"retry": 0,
 								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": [],
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@item().SourceTable"
+								},
+								{
+									"name": "Destination",
+									"value": "@item().DestTable"
+								}
+							],
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
