@@ -39,6 +39,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "Copy data1",
