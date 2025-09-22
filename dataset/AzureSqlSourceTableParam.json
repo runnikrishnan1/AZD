@@ -6,7 +6,10 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"SourceTable": {
+			"TableName": {
+				"type": "string"
+			},
+			"Query": {
 				"type": "string"
 			}
 		},
