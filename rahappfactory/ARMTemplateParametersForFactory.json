@@ -16,6 +16,12 @@
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://rahaccnt.dfs.core.windows.net/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://rahkeyvault.vault.azure.net/"
+		},
+		"RestService_properties_typeProperties_url": {
+			"value": "https://pokeapi.co/api/v2/pokemon/?limit=20&offset={offset}"
 		}
 	}
 }
