@@ -57,17 +57,38 @@
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
-									"referenceName": "AzureSqlTableParam",
+									"referenceName": "AzureSqlSourceTableParam",
 									"type": "DatasetReference",
 									"parameters": {
 										"SourceTable": {
 											"value": "@item().SourceTable",
 											"type": "Expression"
-										},
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AzureSqlDestTableParam",
+									"type": "DatasetReference",
+									"parameters": {
 										"DestTable": {
 											"value": "@item().DestTable",
 											"type": "Expression"
