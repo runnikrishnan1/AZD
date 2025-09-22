@@ -40,7 +40,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@first(activity('Lookup').output.firstRow)",
+						"value": "@array(activity('Lookup').output)",
 						"type": "Expression"
 					},
 					"isSequential": false,
