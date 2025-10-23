@@ -1,0 +1,35 @@
+{
+	"name": "pipeline_dim_product",
+	"properties": {
+		"activities": [
+			{
+				"name": "dt_dim_product",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Mapping_Dim_Product_table",
+						"type": "DataFlowReference"
+					},
+					"staging": {
+						"folderPath": "staging"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
